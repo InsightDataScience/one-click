@@ -63,9 +63,9 @@ resource "aws_security_group" "allow_flask_and_ssh" {
     }
 
     egress {
-        protocol = "tcp"
-        from_port = 0
-        to_port = 65535
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
 }
