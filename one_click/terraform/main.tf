@@ -27,7 +27,7 @@ resource "aws_instance" "flask_server" {
     }
 
     provisioner "file" {
-        source = "./app"
+        source = "../resources/app"
         destination = "/home/ubuntu/app/"
     }
 
