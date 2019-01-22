@@ -24,27 +24,20 @@ resource "aws_instance" "flask_server" {
             private_key = "${file("${var.path_to_private_key}")}"
     }
 
-    provisioner "remote-exec" {
-        inline = [
-            "mkdir root",
-            "echo '${file("./docker-compose.yml")}' > root/docker-compose.yml",
-            "echo '${file("./Dockerfile")}' > root/Dockerfile",
-            "mkdir root/app",
-            "echo '${file("./uwsgi.ini")}' > root/app/uwsgi.ini",
-        ]
-    }
-
     provisioner "file" {
-        source = "${var.path_to_app}/"
-        destination = "/home/ubuntu/root/app"
+        source = "./app"
+        destination = "/home/ubuntu/app/"
     }
 
     provisioner "remote-exec" {
         inline = [
+            "mkdir ./app/app",
+            "git clone ${var.github_clone_link} ./app/app",
+            "mv app/uwsgi.ini ./app/app/",
             "sudo apt-get update && sudo apt-get install -y docker.io",
             "sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose",
             "sudo chmod +x /usr/local/bin/docker-compose",
-            "cd root",
+            "cd ./app",
             "sudo docker-compose up -d"
         ]
     }
@@ -75,7 +68,7 @@ resource "aws_security_group" "allow_flask_and_ssh" {
     }
 }
 
-variable "path_to_app" {}
+variable "github_clone_link" {}
 
 variable "path_to_public_key" {}
 
