@@ -2,10 +2,15 @@ provider "aws" {
     region = "us-west-2"
 }
 
+resource aws_key_pair "one_click" {
+    key_name = "one-click-key"
+    public_key = "${file("${var.path_to_public_key}")}"
+}
+
 resource "aws_instance" "flask_server" {
     ami = "ami-70e90210",
     instance_type = "t2.medium"
-    key_name = "macbook 2019-01-10"
+    key_name = "${aws_key_pair.one_click.key_name}"
 
     vpc_security_group_ids = ["${aws_security_group.allow_flask_and_ssh.id}"]
 
@@ -16,7 +21,7 @@ resource "aws_instance" "flask_server" {
     connection {
             type = "ssh"
             user = "ubuntu"
-            private_key = "${file("~/.ssh/id_rsa")}"
+            private_key = "${file("${var.path_to_private_key}")}"
     }
 
     provisioner "remote-exec" {
@@ -71,6 +76,10 @@ resource "aws_security_group" "allow_flask_and_ssh" {
 }
 
 variable "path_to_app" {}
+
+variable "path_to_public_key" {}
+
+variable "path_to_private_key" {}
 
 output "public_ip" {
     value = "${aws_instance.flask_server.public_ip}"
