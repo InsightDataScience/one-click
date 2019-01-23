@@ -2,8 +2,13 @@ provider "aws" {
     region = "us-west-2"
 }
 
+resource "random_string" "deployment_id" {
+  length = 6
+  special = true
+}
+
 resource aws_key_pair "one_click" {
-    key_name = "one-click-key"
+    key_name = "one-click-key - ${random_string.deployment_id.result}"
     public_key = "${file("${var.path_to_public_key}")}"
 }
 
@@ -15,7 +20,7 @@ resource "aws_instance" "flask_server" {
     vpc_security_group_ids = ["${aws_security_group.allow_flask_and_ssh.id}"]
 
     tags {
-        Name = "flask-server"
+        Name = "flask-server - ${random_string.deployment_id.result}"
     }
 
     connection {
@@ -43,8 +48,9 @@ resource "aws_instance" "flask_server" {
     }
 }
 
+
 resource "aws_security_group" "allow_flask_and_ssh" {
-    name = "allow_flask_and_ssh"
+    name = "allow_flask_and_ssh - ${random_string.deployment_id.result}"
 
     ingress {
         protocol = "tcp"
