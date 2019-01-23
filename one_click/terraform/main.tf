@@ -25,7 +25,7 @@ resource "aws_instance" "flask_server" {
     }
 
     provisioner "file" {
-        source = "../resources/app"
+        source = "${var.base_directory}/resources/app"
         destination = "/home/ubuntu/app/"
     }
 
@@ -67,6 +67,8 @@ resource "aws_security_group" "allow_flask_and_ssh" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 }
+
+variable "base_directory" {}
 
 variable "github_clone_link" {}
 
