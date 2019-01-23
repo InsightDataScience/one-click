@@ -11,5 +11,5 @@ setup(
     entry_points='''
         [console_scripts]
         one-click=one_click.cli:main
-    '''
+    ''',
 )

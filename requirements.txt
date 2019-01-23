@@ -1,2 +1,6 @@
+# application
 click
 python-terraform
+
+# dev
+black
