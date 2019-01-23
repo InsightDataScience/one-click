@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "random_string" "deployment_id" {
   length = 6
-  special = true
+  special = false
 }
 
 resource aws_key_pair "one_click" {
