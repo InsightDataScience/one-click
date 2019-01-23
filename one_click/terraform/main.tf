@@ -1,7 +1,5 @@
 provider "aws" {
     region = "us-west-2"
-    access_key = "${var.aws_access_key}"
-    secret_key = "${var.aws_secret_key}"
 }
 
 resource aws_key_pair "one_click" {
@@ -68,14 +66,6 @@ resource "aws_security_group" "allow_flask_and_ssh" {
         protocol    = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
-}
-
-variable "aws_access_key" {
-	description = "AWS access key (e.g. ABCDE1F2G3HIJKLMNOP )"	
-}
-
-variable "aws_secret_key" {
-	description = "AWS secret key (e.g. 1abc2d34e/f5ghJKlmnopqSr678stUV/WXYZa12 )"	
 }
 
 variable "github_clone_link" {}
