@@ -13,6 +13,6 @@ One-click deployment for Machine Learning apps
 one-click https://github.com/gusostow/EXAMPLE-localtype_site --public_key_path=~/.ssh/id_rsa.pub --private_key_path=~/.ssh/id_rsa
 ```
 
-### Tear down instructions
+## Tear down instructions
 1. Navigate to your deployment directory, which is where the terraform state is located.
 2. Run `one-click destroy`
