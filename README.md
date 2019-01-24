@@ -30,7 +30,7 @@ As of now one-click does not provision automatic CI/CD support to keep your depl
 1. Push your changes to github
 2. Make sure you are inside the directory used for deployment, then destroy and re-deploy your project:
 ```
-one-click destory
+one-click destroy
 one-click deploy <github-link-to-your-app>
 ```
 
