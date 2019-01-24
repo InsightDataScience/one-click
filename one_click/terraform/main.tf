@@ -43,11 +43,11 @@ resource "aws_instance" "flask_server" {
             "sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose",
             "sudo chmod +x /usr/local/bin/docker-compose",
             "cd ./app",
+            "sudo docker-compose build --build-arg IMAGE=${var.image_version} app",
             "sudo docker-compose up -d"
         ]
     }
 }
-
 
 resource "aws_security_group" "allow_flask_and_ssh" {
     name = "allow_flask_and_ssh - ${random_string.deployment_id.result}"
@@ -75,6 +75,8 @@ resource "aws_security_group" "allow_flask_and_ssh" {
 }
 
 variable "base_directory" {}
+
+variable "image_version" {}
 
 variable "github_clone_link" {}
 
