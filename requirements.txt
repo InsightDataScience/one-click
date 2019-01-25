@@ -5,3 +5,4 @@ python-terraform
 # dev
 black
 ipdb
+pytest
