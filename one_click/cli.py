@@ -16,18 +16,17 @@ def deploy(
     public_key_path,
     private_key_path,
     py,
-    use_github,
-    use_local,
+    deployment_source="github",
 ):
     image_version = utils.py_version_to_image(py)
+    github_local_switches = {}
     var = {
         "base_directory": str(BASE_DIR),
         "path_to_public_key": public_key_path,
         "path_to_private_key": private_key_path,
         "project_link_or_path": project_link_or_path,
         "image_version": image_version,
-        "use_github": use_github,
-        "use_local": use_local,
+        **github_local_switches[deployment_source],
     }
 
     tfvars = utils.dict_to_tfvars(var)
@@ -75,8 +74,7 @@ def deploy_github(
         public_key_path,
         private_key_path,
         py,
-        use_github=1,
-        use_local=0,
+        deployment_source="github",
     )
 
 
@@ -90,8 +88,7 @@ def deploy_local(
         public_key_path,
         private_key_path,
         py,
-        use_github=0,
-        use_local=1,
+        deployment_source="local",
     )
 
 
