@@ -9,7 +9,7 @@ Consult the [app compatibility guidelines](#app-compatibility) before deploying 
 
 1. Install terraform `brew install terraform` / `apt-get install terraform`
 1. Clone the repo
-2. Install the one-click package (from inside the cloned repo) `pip install -e .`
+2. Install the one-click package (from inside the cloned repo) `pip install .`
 3. If you do not have local key pair files on your computer, generate public and private rsa keys so a new key pair can automatically be imported to aws by using the default values with `ssh-keygen`. **_Careful_: This will overwrite any existing keys that that are named `id_rsa` and `id_rsa.pub`, so only generate them with default arguments if don't have any in `~/.ssh`**
 4. Ensure that you have valid aws credentials in either your `~/.aws/credentials` file (as set up by the [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)) or in environment variables (`AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY`)
 5. Make a new directory to track the state of your deployment. It can be anywhere. This new *deployment directory* has nothing to do with your project directory that has your code. It will hold the backend state files for the deployment. Any time you want to reference this specific deployment you must be using one-click from its deployment directory.
@@ -36,7 +36,7 @@ As of now one-click does not provision automatic CI/CD support to keep your depl
 2. Make sure you are inside the directory used for deployment, then destroy and re-deploy your project:
 ```
 one-click destroy
-one-click deploy <github-link-to-your-app>
+one-click deploy-github <github-link-to-your-app>
 ```
 
 ## App Compatibility
@@ -90,6 +90,12 @@ You need to ssh into the server to view get visibility in those logs:
 3. View the logs. `sudo docker-compose logs`
 
 Here you will find the python errors you are accustomed to diagnosing when developing your app.
+
+### Other Fixes to Common Problems
+
+#### Broken Paths
+- **Problem:** Absolute paths to files like datasets or models will break. The path `~/gusostow/python/myproject/data/data.csv` might work fine on your laptop, it won't in the docker container built for your app, which has a different directory structure.
+- **Solution:** Switch to referencing paths relatively to the python file that uses them, so they will be invariant to where the script is run. The `__file__` variable has that information.
 
 ## Example Apps 
 
