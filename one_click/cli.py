@@ -11,28 +11,23 @@ BASE_DIR = Path(__file__).parent
 TERRAFORM_DIR = str(BASE_DIR / "terraform")
 
 
-@click.group()
-def main():
-    pass
-
-
-@main.command()
-@click.option("--public_key_path", default="~/.ssh/id_rsa.pub")
-@click.option("--private_key_path", default="~/.ssh/id_rsa")
-@click.option(
-    "--py",
-    default="3.7",
-    help='Python version. Options are 3.7, 3.6, 3.5, 2.7.',
-)
-@click.argument("git_path")
-def deploy(git_path, public_key_path=None, private_key_path=None, py=None):
+def deploy(
+    project_link_or_path,
+    public_key_path,
+    private_key_path,
+    py,
+    use_github,
+    use_local,
+):
     image_version = utils.py_version_to_image(py)
     var = {
         "base_directory": str(BASE_DIR),
         "path_to_public_key": public_key_path,
         "path_to_private_key": private_key_path,
-        "github_clone_link": git_path,
+        "project_link_or_path": project_link_or_path,
         "image_version": image_version,
+        "use_github": use_github,
+        "use_local": use_local,
     }
 
     tf = pt.Terraform()
@@ -47,6 +42,55 @@ def deploy(git_path, public_key_path=None, private_key_path=None, py=None):
         tfvars = utils.dict_to_tfvars(var)
         with open(BACKEND_DIR / "terraform.tfvars", "w") as f:
             f.write(tfvars)
+
+
+@click.group()
+def main():
+    pass
+
+
+@main.command()
+@click.option("--public_key_path", default="~/.ssh/id_rsa.pub")
+@click.option("--private_key_path", default="~/.ssh/id_rsa")
+@click.option(
+    "--py",
+    default="3.7",
+    help='Python version. Options are 3.7, 3.6, 3.5, 2.7.',
+)
+@click.argument("git_path")
+def deploy_github(
+    git_path, public_key_path=None, private_key_path=None, py=None
+):
+    deploy(
+        git_path,
+        public_key_path,
+        private_key_path,
+        py,
+        use_github=1,
+        use_local=0,
+    )
+
+
+@main.command()
+@click.option("--public_key_path", default="~/.ssh/id_rsa.pub")
+@click.option("--private_key_path", default="~/.ssh/id_rsa")
+@click.option(
+    "--py",
+    default="3.7",
+    help='Python version. Options are 3.7, 3.6, 3.5, 2.7.',
+)
+@click.argument("local_path")
+def deploy_local(
+    local_path, public_key_path=None, private_key_path=None, py=None
+):
+    deploy(
+        local_path,
+        public_key_path,
+        private_key_path,
+        py,
+        use_github=0,
+        use_local=1,
+    )
 
 
 @main.command()
