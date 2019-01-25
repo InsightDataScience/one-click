@@ -1,17 +1,3 @@
-resource "null_resource" "upload_resources" {
-    connection {
-        host = "${var.host}"
-        type = "ssh"
-        user = "ubuntu"
-        private_key = "${file("${var.path_to_private_key}")}"
-    }
-
-    provisioner "file" {
-        source = "${var.base_directory}/resources/app"
-        destination = "/home/ubuntu/app/"
-    }
-}
-
 resource "null_resource" "remote_exec_from_github" {
     count = "${var.use_github}"
 
@@ -20,6 +6,11 @@ resource "null_resource" "remote_exec_from_github" {
         type = "ssh"
         user = "ubuntu"
         private_key = "${file("${var.path_to_private_key}")}"
+    }
+    
+    provisioner "file" {
+        source = "${var.base_directory}/resources/app"
+        destination = "/home/ubuntu/app/"
     }
 
     provisioner "remote-exec" {
@@ -45,6 +36,11 @@ resource "null_resource" "remote_exec_from_local" {
         type = "ssh"
         user = "ubuntu"
         private_key = "${file("${var.path_to_private_key}")}"
+    }
+
+    provisioner "file" {
+        source = "${var.base_directory}/resources/app"
+        destination = "/home/ubuntu/app/"
     }
 
     provisioner "file" {

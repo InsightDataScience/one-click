@@ -87,7 +87,7 @@ However, once the environment is set up, the server logs won't be directly visib
 You need to ssh into the server to view get visibility in those logs:
 1. Get shell access to the server. `ssh ubuntu@<outputed-dns-address>`. You don't need to specify the path to a key file because you already did that in the deploy phase.
 2. `cd app`
-3. View the logs. `sudo docker-compose logs`
+3. View the logs. `docker-compose logs`
 
 Here you will find the python errors you are accustomed to diagnosing when developing your app.
 
