@@ -12,12 +12,17 @@ Consult the [app compatibility guidelines](#app-compatibility) before deploying 
 2. Install the one-click package (from inside the cloned repo) `pip install -e .`
 3. If you do not have local key pair files on your computer, generate public and private rsa keys so a new key pair can automatically be imported to aws by using the default values with `ssh-keygen`. **_Careful_: This will overwrite any existing keys that that are named `id_rsa` and `id_rsa.pub`, so only generate them with default arguments if don't have any in `~/.ssh`**
 4. Ensure that you have valid aws credentials in either your `~/.aws/credentials` file (as set up by the [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)) or in environment variables (`AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY`)
-5. Make a new directory to track the state of your deployment. It can be anywhere.
-6. Deploy your project! Inside the deployment directory you just created, run
+5. Make a new directory to track the state of your deployment. It can be anywhere. This new *deployment directory* has nothing to do with your project directory that has your code. It will hold the backend state files for the deployment. Any time you want to reference this specific deployment you must be using one-click from its deployment directory.
+6. Deploy your project! Inside the deployment directory you just created, run for github deployment
 ```
-one-click deploy https://github.com/gusostow/EXAMPLE-localtype_site --public_key_path=~/.ssh/id_rsa.pub --private_key_path=~/.ssh/id_rsa
+one-click deploy-github https://github.com/gusostow/EXAMPLE-localtype_site --public_key_path=~/.ssh/id_rsa.pub --private_key_path=~/.ssh/id_rsa
 ```
-Your app should now be publicly available from the `public_dns` output in your console.
+or for local deployment
+```
+one-click deploy-local ~/your-name/awesome_project --public_key_path=~/.ssh/id_rsa.pub --private_key_path=~/.ssh/id_rsa
+```
+
+Your app should now be publicly available from the `public_dns` output in your console. If you want to ssh into the instance this can be done with `ssh ubuntu@<public-dns>`
 
 ### Destroy Instructions
 
