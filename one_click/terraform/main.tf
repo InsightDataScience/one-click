@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "random_string" "deployment_id" {
   length = 6
-  special = true
+  special = false
 }
 
 resource aws_key_pair "one_click" {
@@ -22,32 +22,19 @@ resource "aws_instance" "flask_server" {
     tags {
         Name = "flask-server - ${random_string.deployment_id.result}"
     }
-
-    connection {
-            type = "ssh"
-            user = "ubuntu"
-            private_key = "${file("${var.path_to_private_key}")}"
-    }
-
-    provisioner "file" {
-        source = "${var.base_directory}/resources/app"
-        destination = "/home/ubuntu/app/"
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "mkdir ./app/app",
-            "git clone ${var.github_clone_link} ./app/app",
-            "mv app/uwsgi.ini ./app/app/",
-            "sudo apt-get update && sudo apt-get install -y docker.io",
-            "sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose",
-            "sudo chmod +x /usr/local/bin/docker-compose",
-            "cd ./app",
-            "sudo docker-compose up -d"
-        ]
-    }
 }
 
+module "provision_project" {
+    source = "./provision_project"
+
+    host = "${aws_instance.flask_server.public_ip}"
+    path_to_private_key = "${var.path_to_private_key}"
+    base_directory = "${var.base_directory}"
+    project_link_or_path = "${var.project_link_or_path}"
+    image_version = "${var.image_version}"
+    use_github = "${var.use_github}"
+    use_local = "${var.use_local}"
+}
 
 resource "aws_security_group" "allow_flask_and_ssh" {
     name = "allow_flask_and_ssh - ${random_string.deployment_id.result}"
@@ -72,16 +59,4 @@ resource "aws_security_group" "allow_flask_and_ssh" {
         protocol    = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
-}
-
-variable "base_directory" {}
-
-variable "github_clone_link" {}
-
-variable "path_to_public_key" {}
-
-variable "path_to_private_key" {}
-
-output "public_dns" {
-    value = "${aws_instance.flask_server.public_dns}"
 }
