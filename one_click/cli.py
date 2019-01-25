@@ -30,6 +30,10 @@ def deploy(
         "use_local": use_local,
     }
 
+    tfvars = utils.dict_to_tfvars(var)
+    with open(BACKEND_DIR / "terraform.tfvars", "w") as f:
+        f.write(tfvars)
+
     tf = pt.Terraform()
     tf.init(
         dir_or_plan=str(BACKEND_DIR),
@@ -38,25 +42,30 @@ def deploy(
     )
     return_code, _, _ = tf.apply(var=var, capture_output=False)
 
-    if not return_code:
-        tfvars = utils.dict_to_tfvars(var)
-        with open(BACKEND_DIR / "terraform.tfvars", "w") as f:
-            f.write(tfvars)
-
 
 @click.group()
 def main():
     pass
 
 
-@main.command()
-@click.option("--public_key_path", default="~/.ssh/id_rsa.pub")
-@click.option("--private_key_path", default="~/.ssh/id_rsa")
-@click.option(
-    "--py",
-    default="3.7",
-    help='Python version. Options are 3.7, 3.6, 3.5, 2.7.',
-)
+def deployment_options(deployment_function):
+    deployment_function = click.option(
+        "--py",
+        default="3.7",
+        help='Python version. Options are 3.7, 3.6, 3.5, 2.7.',
+    )(deployment_function)
+    deployment_function = click.option(
+        "--private_key_path", default="~/.ssh/id_rsa"
+    )(deployment_function)
+    deployment_function = click.option(
+        "--public_key_path", default="~/.ssh/id_rsa.pub"
+    )(deployment_function)
+    deployment_function = main.command()(deployment_function)
+
+    return deployment_function
+
+
+@deployment_options
 @click.argument("git_path")
 def deploy_github(
     git_path, public_key_path=None, private_key_path=None, py=None
@@ -71,14 +80,7 @@ def deploy_github(
     )
 
 
-@main.command()
-@click.option("--public_key_path", default="~/.ssh/id_rsa.pub")
-@click.option("--private_key_path", default="~/.ssh/id_rsa")
-@click.option(
-    "--py",
-    default="3.7",
-    help='Python version. Options are 3.7, 3.6, 3.5, 2.7.',
-)
+@deployment_options
 @click.argument("local_path")
 def deploy_local(
     local_path, public_key_path=None, private_key_path=None, py=None
