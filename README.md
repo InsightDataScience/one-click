@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
 ### Requirements File
 
-One click fresh python environment in ubuntu for every deployment. You need to clearly specify which python requirements your app depends on.
+One-click builds a fresh python environment in ubuntu for every deployment. You need to clearly specify which python requirements your app depends on.
 
 - Put the name (and potentially the version number) of every requirement in a file `requirements.txt` in the root of your project. Once again, _**The name and the location of `requirements.txt` are non-negotiable.**_ 
 
