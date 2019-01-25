@@ -15,7 +15,7 @@ Consult the [app compatibility guidelines](#app-compatibility) before deploying 
 5. Make a new directory to track the state of your deployment. It can be anywhere.
 6. Deploy your project! Inside the deployment directory you just created, run
 ```
-one-click https://github.com/gusostow/EXAMPLE-localtype_site --public_key_path=~/.ssh/id_rsa.pub --private_key_path=~/.ssh/id_rsa
+one-click deploy https://github.com/gusostow/EXAMPLE-localtype_site --public_key_path=~/.ssh/id_rsa.pub --private_key_path=~/.ssh/id_rsa
 ```
 Your app should now be publicly available from the `public_dns` output in your console.
 
