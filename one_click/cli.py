@@ -6,7 +6,7 @@ import python_terraform as pt
 from one_click import utils
 
 
-BACKEND_DIR = Path.cwd()
+DEPLOYMENT_DIR = Path.cwd()
 BASE_DIR = Path(__file__).parent
 TERRAFORM_DIR = str(BASE_DIR / "terraform")
 
@@ -30,12 +30,12 @@ def deploy(
     }
 
     tfvars = utils.dict_to_tfvars(var)
-    with open(BACKEND_DIR / "terraform.tfvars", "w") as f:
+    with open(DEPLOYMENT_DIR / "terraform.tfvars", "w") as f:
         f.write(tfvars)
 
     tf = pt.Terraform()
     tf.init(
-        dir_or_plan=str(BACKEND_DIR),
+        dir_or_plan=str(DEPLOYMENT_DIR),
         from_module=TERRAFORM_DIR,
         capture_output=False,
     )
@@ -94,22 +94,8 @@ def deploy_local(
 
 @main.command()
 def destroy():
-    required_state_files = (
-        ".terraform",
-        "main.tf",
-        "terraform.tfstate",
-        "terraform.tfvars",
-    )
-    has_all_required_files = all(
-        map(lambda path: any(BACKEND_DIR.glob(path)), required_state_files)
-    )
-    if not has_all_required_files:
-        raise click.UsageError(
-            f"""
-            Deployment directory is missing some or all of the required state
-            files: {required_state_files}. Make sure that you actually have a
-            project deployed and that you are in its correct directory."""
-        )
+    # Ensure that the proper backend files are in the deployment directory
+    utils.pre_destroy_check(DEPLOYMENT_DIR)
 
     tf = pt.Terraform()
     tf.destroy(capture_output=False)
