@@ -19,7 +19,11 @@ def deploy(
     deployment_source="github",
 ):
     image_version = utils.py_version_to_image(py)
-    github_local_switches = {}
+    github_local_switches = {
+        "github": {"use_github": 1, "use_local": 0},
+        "local": {"use_github": 0, "use_local": 1},
+    }
+
     var = {
         "base_directory": str(BASE_DIR),
         "path_to_public_key": public_key_path,
