@@ -6,7 +6,7 @@ import python_terraform as pt
 from one_click import utils
 
 
-BACKEND_DIR = Path.cwd()
+DEPLOYMENT_DIR = Path.cwd()
 BASE_DIR = Path(__file__).parent
 TERRAFORM_DIR = str(BASE_DIR / "terraform")
 
@@ -16,27 +16,30 @@ def deploy(
     public_key_path,
     private_key_path,
     py,
-    use_github,
-    use_local,
+    deployment_source="github",
 ):
     image_version = utils.py_version_to_image(py)
+    github_local_switches = {
+        "github": {"use_github": 1, "use_local": 0},
+        "local": {"use_github": 0, "use_local": 1},
+    }
+
     var = {
         "base_directory": str(BASE_DIR),
         "path_to_public_key": public_key_path,
         "path_to_private_key": private_key_path,
         "project_link_or_path": project_link_or_path,
         "image_version": image_version,
-        "use_github": use_github,
-        "use_local": use_local,
+        **github_local_switches[deployment_source],
     }
 
     tfvars = utils.dict_to_tfvars(var)
-    with open(BACKEND_DIR / "terraform.tfvars", "w") as f:
+    with open(DEPLOYMENT_DIR / "terraform.tfvars", "w") as f:
         f.write(tfvars)
 
     tf = pt.Terraform()
     tf.init(
-        dir_or_plan=str(BACKEND_DIR),
+        dir_or_plan=str(DEPLOYMENT_DIR),
         from_module=TERRAFORM_DIR,
         capture_output=False,
     )
@@ -75,8 +78,7 @@ def deploy_github(
         public_key_path,
         private_key_path,
         py,
-        use_github=1,
-        use_local=0,
+        deployment_source="github",
     )
 
 
@@ -90,29 +92,14 @@ def deploy_local(
         public_key_path,
         private_key_path,
         py,
-        use_github=0,
-        use_local=1,
+        deployment_source="local",
     )
 
 
 @main.command()
 def destroy():
-    required_state_files = (
-        ".terraform",
-        "main.tf",
-        "terraform.tfstate",
-        "terraform.tfvars",
-    )
-    has_all_required_files = all(
-        map(lambda path: any(BACKEND_DIR.glob(path)), required_state_files)
-    )
-    if not has_all_required_files:
-        raise click.UsageError(
-            f"""
-            Deployment directory is missing some or all of the required state
-            files: {required_state_files}. Make sure that you actually have a
-            project deployed and that you are in its correct directory."""
-        )
+    # Ensure that the proper backend files are in the deployment directory
+    utils.pre_destroy_check(DEPLOYMENT_DIR)
 
     tf = pt.Terraform()
     tf.destroy(capture_output=False)
