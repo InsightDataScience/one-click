@@ -19,7 +19,7 @@ one-click deploy-github https://github.com/gusostow/EXAMPLE-localtype_site --pub
 ```
 or for local deployment
 ```
-one-click deploy-local ~/your-name/awesome_project --public_key_path=~/.ssh/id_rsa.pub --private_key_path=~/.ssh/id_rsa
+one-click deploy-local ~/path/to/your/flask/project/folder --public_key_path=~/.ssh/id_rsa.pub --private_key_path=~/.ssh/id_rsa
 ```
 
 Your app should now be publicly available from the `public_dns` output in your console. If you want to ssh into the instance this can be done with `ssh ubuntu@<public-dns>`
