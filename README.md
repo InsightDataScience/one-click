@@ -45,7 +45,7 @@ One-click has several strict requirements for apps it can deploy. Rigid specific
 
 ### Directory Structure 
 
-- There must be a python file called `run.py in the root of your project directory that will run your app. _**The name and the location are non-negotiable.**_ The file might looks something like:
+- There must be a python file called `run.py` in the root of your project directory that will run your app. _**The name and the location are non-negotiable.**_ The file might looks something like:
 ```python
 from your_project import app
 
