@@ -34,6 +34,7 @@ module "provision_project" {
     image_version = "${var.image_version}"
     use_github = "${var.use_github}"
     use_local = "${var.use_local}"
+    public_ip = "${aws_instance.flask_server.public_ip}"
 }
 
 resource "aws_security_group" "allow_flask_and_ssh" {
