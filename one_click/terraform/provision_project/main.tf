@@ -23,8 +23,8 @@ resource "null_resource" "remote_exec_from_github" {
             "sudo chmod +x /usr/local/bin/docker-compose",
             "sudo usermod -aG docker",
             "cd ./app",
-            "docker-compose build --build-arg IMAGE=${var.image_version} app",
-            "docker-compose up -d"
+            "sudo docker-compose build --build-arg IMAGE=${var.image_version} app",
+            "sudo docker-compose up -d"
         ]
     }
 }
