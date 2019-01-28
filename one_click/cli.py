@@ -18,22 +18,14 @@ def deploy(
     py,
     deployment_source="github",
 ):
-    image_version = utils.py_version_to_image(py)
-    github_local_switches = {
-        "github": {"use_github": 1, "use_local": 0},
-        "local": {"use_github": 0, "use_local": 1},
-    }
+    tfvars = utils.build_and_validate_tfvars(
+        project_link_or_path,
+        public_key_path,
+        private_key_path,
+        py,
+        deployment_source,
+    )
 
-    var = {
-        "base_directory": str(BASE_DIR),
-        "path_to_public_key": public_key_path,
-        "path_to_private_key": private_key_path,
-        "project_link_or_path": project_link_or_path,
-        "image_version": image_version,
-        **github_local_switches[deployment_source],
-    }
-
-    tfvars = utils.dict_to_tfvars(var)
     with open(DEPLOYMENT_DIR / "terraform.tfvars", "w") as f:
         f.write(tfvars)
 
@@ -43,7 +35,7 @@ def deploy(
         from_module=TERRAFORM_DIR,
         capture_output=False,
     )
-    return_code, _, _ = tf.apply(var=var, capture_output=False)
+    return_code, _, _ = tf.apply(capture_output=False)
 
 
 @click.group()

@@ -11,3 +11,5 @@ variable "image_version" {}
 variable "use_github" {}
 
 variable "use_local" {}
+
+variable "public_ip" {}

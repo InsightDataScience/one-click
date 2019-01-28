@@ -14,7 +14,7 @@ resource aws_key_pair "one_click" {
 
 resource "aws_instance" "flask_server" {
     ami = "ami-70e90210",
-    instance_type = "t2.medium"
+    instance_type = "t2.micro"
     key_name = "${aws_key_pair.one_click.key_name}"
 
     vpc_security_group_ids = ["${aws_security_group.allow_flask_and_ssh.id}"]
@@ -34,6 +34,7 @@ module "provision_project" {
     image_version = "${var.image_version}"
     use_github = "${var.use_github}"
     use_local = "${var.use_local}"
+    public_ip = "${aws_instance.flask_server.public_ip}"
 }
 
 resource "aws_security_group" "allow_flask_and_ssh" {
