@@ -5,9 +5,13 @@ One-click deployment for Machine Learning Flask apps
 
 Consult the [app compatibility guidelines](#app-compatibility) before deploying for the first time. You may have to restructure your project before it will work with one-click.
 
+### Requirements
+
+- You need terraform installed. MacOs: `brew install terraform` / linux: `apt-get install terraform`
+- An AWS account. Don't worry about expenses; one-click deployments qualify for the free tier by default.
+
 ### Deploy Instructions
 
-1. Install terraform `brew install terraform` / `apt-get install terraform`
 1. Clone the repo
 2. Install the one-click package (from inside the cloned repo) `pip install .`
 3. If you do not have local key pair files on your computer, generate public and private rsa keys so a new key pair can automatically be imported to aws by using the default values with `ssh-keygen`. **_Careful_: This will overwrite any existing keys that that are named `id_rsa` and `id_rsa.pub`, so only generate them with default arguments if don't have any in `~/.ssh`**
