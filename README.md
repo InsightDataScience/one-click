@@ -11,7 +11,7 @@ The deploy might be one click ... installing dependencies, making your AWS accou
 2. Create an [IAM admin user and group](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html). AWS credentialling is confusing. This instruction creates a new sub-user that will be safer to use than the root account you just created in step 1.
 3. Get the access key and secret access key from the IAM administrator user you just created. 
   - Go to the [IAM console](https://console.aws.amazon.com/iam/home?#home)
-  - Choose **Users**
+  - Choose **Users** and then the administrator user you just created.
   - Select the **Security Credentials** tab and then hit **Create Access Key**
   - Choose **Show**
   - We need to export these as enviornment variables in your `~/.bash_profile`. You should add something that looks like this to the bottom of your profile using your favorite text editor, where the keys your own of course:
