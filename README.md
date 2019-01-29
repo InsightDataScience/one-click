@@ -52,6 +52,7 @@ One-click has several strict requirements for apps it can deploy. Rigid specific
 
 #### Directory Structure 
 
+- Your directory structure **must be flat**. That means your `templates`, `static`, and the file where you first create your flask app (`app = Flask(__name__)`) needs to be **in the root for your project**. Otherwise things will break. This is very important.
 - There must be a python file called `run.py` in the root of your project directory that will run your app. _**The name and the location are non-negotiable.**_ The file might looks something like:
 ```python
 from views import app
@@ -60,7 +61,6 @@ if __name__ == '__main__':
   app.run(host='0.0.0.0', port=80)
 ```
 - As of now, run your app in `run.py` on `host='0.0.0.0'` and `port=80`
-- Your directory structure **must be flat**. That means your `templates`, `static`, and file where you first create your flask app (`app = Flask(__name__)`) need to be **in the root for your project**. Otherwise things will break.
 
 #### Requirements File
 
