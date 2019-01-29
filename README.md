@@ -16,12 +16,12 @@ Windows is not directly supported at this time. The [Ubuntu subsystem](https://h
   - Choose **Users** and then the administrator user you just created.
   - Select the **Security Credentials** tab and then hit **Create Access Key**
   - Choose **Show**
-  - We need to export these as enviornment variables in your `~/.bash_profile`. You should add something that looks like this to the bottom of your profile using your favorite text editor, where the keys your own of course:
+  - We need to export these as enviornment variables in your `~/.bash_profile`. You should add something that looks like this to the bottom of your profile using your favorite text editor, where the keys are your own of course:
   ```bash
   export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
   export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
   ```
-  Now your laptop will be fully authorized to create resources on AWS!
+  Then source your profile `souce ~/.bash_profile` and now your laptop will be fully authorized to create resources on AWS!
   
 ### Create RSA Key Pair
 
