@@ -3,7 +3,9 @@ One-click deployment for Machine Learning Flask apps
 
 ## Before you Can Deploy
 
-The deploy might be one click ... installing dependencies, making your AWS account, and ensuring your project is compatible with one-click is not. If you've already setup your machine and your project skip to the [quick-start guide](#quick-start-guide)
+The deploy might be one click ... installing dependencies, making your AWS account, and ensuring your project is compatible with one-click is not. If you've already setup your machine and your project skip to the [quick-start guide](#quick-start-guide).
+
+Windows is not directly supported at this time. The [Ubuntu subsystem](https://helloacm.com/the-ubuntu-sub-system-new-bash-shell-in-windows-10/) for Windows 10 is recommended. 
 
 ### AWS Setup
 
@@ -43,7 +45,8 @@ The deploy might be one click ... installing dependencies, making your AWS accou
 ### Software Requirements
 
 - You need terraform installed.
-  - MacOs: `brew install terraform`
+  - MacOs: `brew install terraform`. If you don't have homebrew, install it with this command: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`.
+. 
   - linux: `apt-get install terraform`
 
 ### App Compatibility
