@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 with open('requirements.txt', 'r') as f:
@@ -12,4 +12,5 @@ setup(
         [console_scripts]
         one-click=one_click.cli:main
     ''',
+    packages=find_packages(),
 )
