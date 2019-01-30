@@ -9,7 +9,7 @@ Windows is not directly supported at this time. The [Ubuntu subsystem](https://h
 
 ### AWS Setup
 
-1. Create a [AWS account](aws.amazon.com) (or use an existing one).
+1. Create a [AWS account](https://aws.amazon.com/) (or use an existing one).
 2. Create an [IAM admin user and group](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html). AWS credentialling is confusing. This instruction creates a new sub-user that will be safer to use than the root account you just created in step 1.
 3. Get the access key and secret access key from the IAM administrator user you just created. 
   - Go to the [IAM console](https://console.aws.amazon.com/iam/home?#home)
