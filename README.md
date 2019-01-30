@@ -25,7 +25,7 @@ Windows is not directly supported at this time. The [Ubuntu subsystem](https://h
   
 ### Create RSA Key Pair
 
-1. Check to see if you already have keys with default names: `ls ~/.ssh`. If you have two files with names `id_rsa` and `id_rsa.pub` then you are all set to skip this section, if not then continue on to creating the key pair.
+1. Check to see if you already have keys with default names: `ls ~/.ssh` (It's fine if it says the directory `~/.ssh` doesn't exist). If you have two files with names `id_rsa` and `id_rsa.pub` then you are all set to skip this section, if not then continue on to creating the key pair.
 2. `ssh-keygen`
 3. Continue by pressing enter repeatedly (you don't need to enter anything in the text boxes) until you see something like this 
 ```
