@@ -25,7 +25,7 @@ Windows is not directly supported at this time. The [Ubuntu subsystem](https://h
   
 ### Create RSA Key Pair
 
-1. Check to see if you already have keys with default names: `ls ~/.ssh` (It's fine if it says the directory `~/.ssh` doesn't exist). If you have two files with names `id_rsa` and `id_rsa.pub` then you are all set to skip this section, if not then continue on to creating the key pair.
+1. Check to see if you already have keys with default names: `ls ~/.ssh` (It's fine if it says the directory `~/.ssh` doesn't exist move on to step 2). If you have two files with names `id_rsa` and `id_rsa.pub` then you are all set to skip this section, if not then continue on to creating the key pair.
 2. `ssh-keygen`
 3. Continue by pressing enter repeatedly (you don't need to enter anything in the text boxes) until you see something like this 
 ```
@@ -90,7 +90,7 @@ Consult the [app compatibility guidelines](#app-compatibility) before deploying 
 ### Deploy Instructions
 
 1. Clone the repo
-2. Install the one-click package (from inside the cloned repo) `pip install .`
+2. Install the one-click package (from inside the cloned repo) `pip install -e .`
 3. Make a new directory to track the state of your deployment. It can be anywhere. This new *deployment directory* has nothing to do with your project directory that has your code. It will hold the backend state files for the deployment. Any time you want to reference this specific deployment you must be using one-click from its deployment directory.
 4. Deploy your project! Inside the deployment directory you just created, run for github deployment (**NOTE:** if you didn't use the default names when you generated your RSA keys, or if you're on windows, then you will have to specify the paths with the `--private_key_path` and `--public_key_path`command line options)
 ```
