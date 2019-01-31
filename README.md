@@ -3,28 +3,30 @@ One-click deployment for Machine Learning Flask apps
 
 ## Before you Can Deploy
 
-The deploy might be one click ... installing dependencies, making your AWS account, and ensuring your project is compatible with one-click is not. If you've already setup your machine and your project skip to the [quick-start guide](#quick-start-guide)
+The deploy might be one click ... installing dependencies, making your AWS account, and ensuring your project is compatible with one-click is not. If you've already setup your machine and your project skip to the [quick-start guide](#quick-start-guide).
+
+Windows is not directly supported at this time. The [Ubuntu subsystem](https://helloacm.com/the-ubuntu-sub-system-new-bash-shell-in-windows-10/) for Windows 10 is recommended. 
 
 ### AWS Setup
 
-1. Create a [AWS account](aws.amazon.com) (or use an existing one).
+1. Create a [AWS account](https://aws.amazon.com/) (or use an existing one).
 2. Create an [IAM admin user and group](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html). AWS credentialling is confusing. This instruction creates a new sub-user that will be safer to use than the root account you just created in step 1.
 3. Get the access key and secret access key from the IAM administrator user you just created. 
   - Go to the [IAM console](https://console.aws.amazon.com/iam/home?#home)
-  - Choose **Users**
+  - Choose **Users** and then the administrator user you just created.
   - Select the **Security Credentials** tab and then hit **Create Access Key**
   - Choose **Show**
-  - We need to export these as enviornment variables in your `~/.bash_profile`. You should add something that looks like this to the bootom of it using your favorite text editor:
+  - We need to export these as enviornment variables in your `~/.bash_profile`. You should add something that looks like this to the bottom of your profile using your favorite text editor, where the keys are your own of course:
   ```bash
   export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
   export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
   ```
-  Now your laptop will be fully authorized to create resources on AWS!
+  Then source your profile `souce ~/.bash_profile` and now your laptop will be fully authorized to create resources on AWS!
   
 ### Create RSA Key Pair
 
-1. Check to see if you already have keys with default names: `ls ~/.ssh`. If you have two files with names `id_rsa` and `id_rsa.pub` then you are all set to skip this section, if not then continue on to creating the key pair.
-2. `rsa-keygen`
+1. Check to see if you already have keys with default names: `ls ~/.ssh` (It's fine if it says the directory `~/.ssh` doesn't exist move on to step 2). If you have two files with names `id_rsa` and `id_rsa.pub` then you are all set to skip this section, if not then continue on to creating the key pair.
+2. `ssh-keygen`
 3. Continue by pressing enter repeatedly (you don't need to enter anything in the text boxes) until you see something like this 
 ```
 +--[ RSA 2048]----+
@@ -43,7 +45,8 @@ The deploy might be one click ... installing dependencies, making your AWS accou
 ### Software Requirements
 
 - You need terraform installed.
-  - MacOs: `brew install terraform`
+  - MacOs: `brew install terraform`. If you don't have homebrew, install it with this command: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`.
+. 
   - linux: `apt-get install terraform`
 
 ### App Compatibility
@@ -52,7 +55,7 @@ One-click has several strict requirements for apps it can deploy. Rigid specific
 
 #### Directory Structure 
 
-- Your directory structure **must be flat**. That means your `templates`, `static`, and the file where you first create your flask app (`app = Flask(__name__)`) needs to be **in the root for your project**. Otherwise things will break. This is very important.
+- It is strongly recommended that your directory structure be flat. Having your app defined, your templates, and your static folder in a nested subfolder e.g. in `yourapp/flaskexample/` might cause problems. 
 - There must be a python file called `run.py` in the root of your project directory that will run your app. _**The name and the location are non-negotiable.**_ The file might looks something like:
 ```python
 from views import app
@@ -87,7 +90,7 @@ Consult the [app compatibility guidelines](#app-compatibility) before deploying 
 ### Deploy Instructions
 
 1. Clone the repo
-2. Install the one-click package (from inside the cloned repo) `pip install .`
+2. Install the one-click package (from inside the cloned repo) `pip install -e .`
 3. Make a new directory to track the state of your deployment. It can be anywhere. This new *deployment directory* has nothing to do with your project directory that has your code. It will hold the backend state files for the deployment. Any time you want to reference this specific deployment you must be using one-click from its deployment directory.
 4. Deploy your project! Inside the deployment directory you just created, run for github deployment (**NOTE:** if you didn't use the default names when you generated your RSA keys, or if you're on windows, then you will have to specify the paths with the `--private_key_path` and `--public_key_path`command line options)
 ```

@@ -1,8 +1,9 @@
 from typing import Dict, Optional
+from pathlib import Path
 
 import click
 
-from one_click import cli
+BASE_DIR = str(Path(__file__).parent)
 
 
 def dict_to_tfvars(vars: Dict[str, str]) -> str:
@@ -28,6 +29,7 @@ def build_and_validate_tfvars(
     public_key_path,
     private_key_path,
     py,
+    instance_type,
     deployment_source="github",
 ):
     # Drop trailing slash from local path so it doesn't interfere with rsync
@@ -42,11 +44,12 @@ def build_and_validate_tfvars(
     image_tag = py_version_to_image(py)
 
     var = {
-        "base_directory": str(cli.BASE_DIR),
+        "base_directory": str(BASE_DIR),
         "path_to_public_key": public_key_path,
         "path_to_private_key": private_key_path,
         "project_link_or_path": project_link_or_path,
         "image_version": image_tag,
+        "instance_type": instance_type,
         **github_local_switches[deployment_source],
     }
 
