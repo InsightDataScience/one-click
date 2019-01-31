@@ -29,6 +29,7 @@ def build_and_validate_tfvars(
     public_key_path,
     private_key_path,
     py,
+    instance_type,
     deployment_source="github",
 ):
     # Drop trailing slash from local path so it doesn't interfere with rsync
@@ -48,6 +49,7 @@ def build_and_validate_tfvars(
         "path_to_private_key": private_key_path,
         "project_link_or_path": project_link_or_path,
         "image_version": image_tag,
+        "instance_type": instance_type,
         **github_local_switches[deployment_source],
     }
 

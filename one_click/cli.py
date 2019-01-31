@@ -16,6 +16,7 @@ def deploy(
     public_key_path,
     private_key_path,
     py,
+    instance_type,
     deployment_source="github",
 ):
     tfvars = utils.build_and_validate_tfvars(
@@ -23,7 +24,8 @@ def deploy(
         public_key_path,
         private_key_path,
         py,
-        deployment_source,
+        instance_type,
+        deployment_source=deployment_source,
     )
 
     with open(DEPLOYMENT_DIR / "terraform.tfvars", "w") as f:
@@ -50,6 +52,11 @@ def deployment_options(deployment_function):
         help='Python version. Options are 3.7, 3.6, 3.5, 2.7.',
     )(deployment_function)
     deployment_function = click.option(
+        "--instance_type",
+        default="t2.medium",
+        help="See what's available here https://aws.amazon.com/ec2/instance-types/",
+    )(deployment_function)
+    deployment_function = click.option(
         "--private_key_path", default="~/.ssh/id_rsa"
     )(deployment_function)
     deployment_function = click.option(
@@ -63,13 +70,18 @@ def deployment_options(deployment_function):
 @deployment_options
 @click.argument("git_path")
 def deploy_github(
-    git_path, public_key_path=None, private_key_path=None, py=None
+    git_path,
+    public_key_path=None,
+    private_key_path=None,
+    py=None,
+    instance_type=None,
 ):
     deploy(
         git_path,
         public_key_path,
         private_key_path,
         py,
+        instance_type,
         deployment_source="github",
     )
 
@@ -77,13 +89,18 @@ def deploy_github(
 @deployment_options
 @click.argument("local_path")
 def deploy_local(
-    local_path, public_key_path=None, private_key_path=None, py=None
+    local_path,
+    public_key_path=None,
+    private_key_path=None,
+    py=None,
+    instance_type=None,
 ):
     deploy(
         local_path,
         public_key_path,
         private_key_path,
         py,
+        instance_type,
         deployment_source="local",
     )
 
@@ -92,6 +109,5 @@ def deploy_local(
 def destroy():
     # Ensure that the proper backend files are in the deployment directory
     utils.pre_destroy_check(DEPLOYMENT_DIR)
-
     tf = pt.Terraform()
     tf.destroy(capture_output=False)
