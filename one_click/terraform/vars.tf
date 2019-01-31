@@ -1,5 +1,7 @@
 variable "base_directory" {}
 
+variable "instance_type" {}
+
 variable "image_version" {}
 
 variable "project_link_or_path" {}
