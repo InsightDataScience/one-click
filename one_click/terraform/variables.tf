@@ -1,3 +1,7 @@
+variable "instance_name_base" {
+    default = "flask-server"
+}
+
 variable "base_directory" {}
 
 variable "instance_type" {}

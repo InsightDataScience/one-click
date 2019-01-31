@@ -20,7 +20,7 @@ resource "aws_instance" "flask_server" {
     vpc_security_group_ids = ["${aws_security_group.allow_flask_and_ssh.id}"]
 
     tags {
-        Name = "flask-server - ${random_string.deployment_id.result}"
+        Name = "${var.instance_name_base} - ${random_string.deployment_id.result}"
     }
 }
 

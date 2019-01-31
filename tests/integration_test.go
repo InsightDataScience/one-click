@@ -1,16 +1,21 @@
 package test
 
 import (
+	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/random"
-
-	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
+
+func SetUp() {
+
+}
 
 func TestGithub(t *testing.T) {
 
@@ -18,20 +23,23 @@ func TestGithub(t *testing.T) {
 
 	defer test_structure.RunTestStage(t, "teardown", func() {
 		terraformOptions := test_structure.LoadTerraformOptions(t, terraformDirectory)
-		keyPair := test_structure.LoadEc2KeyPair(t, terraformDirectory)
-
 		terraform.Destroy(t, terraformOptions)
-		aws.DeleteEC2KeyPair(t, keyPair)
 
-		testFile := filepath.Join(terraformDirectory, "public-ip")
-		if _, err := os.Stat(testFile); err == nil {
-			os.Remove(testFile)
-		}
+		os.RemoveAll(dir)
 	})
 
 	test_structure.RunTestStage(t, "setup", func() {
 
 		uniqueID := random.UniqueId()
+		instanceNameBase := "terratest - flask-server"
+
+		dir, err := ioutil.TempDir("", "deployment_directory")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		keyPair := ssh.GenerateRSAKeyPair(t, 1096)
+		fmt.Printf(keyPair.PublicKey)
 
 	})
 
