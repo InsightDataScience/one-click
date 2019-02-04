@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"testing"
-	"time"
 
 	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -87,7 +86,6 @@ func TestGithub(t *testing.T) {
 		// Load address of test webserver
 		publicDNS := test_structure.LoadString(t, terraformDirectory, dnsFileName)
 
-		time.Sleep(time.Second * 30)
 		// Check if webserver is responding to requests
 		publicDNSFullURL := "http://" + publicDNS
 		response, e := GetWithRetryE(publicDNSFullURL, 30)
