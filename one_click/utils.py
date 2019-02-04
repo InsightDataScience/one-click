@@ -59,7 +59,6 @@ def build_and_validate_tfvars(
 def pre_destroy_check(deployment_directory):
     required_state_files = (
         ".terraform",
-        "main.tf",
         "terraform.tfstate",
         "terraform.tfvars",
     )
