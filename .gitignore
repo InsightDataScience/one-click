@@ -125,3 +125,4 @@ dmypy.json
 *.test
 *.out
 vendor/
+.test-data
