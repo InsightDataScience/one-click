@@ -1,4 +1,6 @@
 # one-click
+[![CircleCI](https://circleci.com/gh/InsightDataCommunity/one-click/tree/master.svg?style=svg)](https://circleci.com/gh/InsightDataCommunity/one-click/tree/master)
+
 One-click deployment for Machine Learning Flask apps
 
 ## Before you Can Deploy
