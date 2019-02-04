@@ -47,7 +47,7 @@ Windows is not directly supported at this time. The [Ubuntu subsystem](https://h
 - You need terraform installed.
   - MacOs: `brew install terraform`. If you don't have homebrew, install it with this command: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`.
 . 
-  - linux: `apt-get install terraform`
+  - linux: https://www.terraform.io/downloads.html
 
 ### App Compatibility
 
