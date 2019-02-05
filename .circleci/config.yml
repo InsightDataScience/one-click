@@ -1,40 +1,40 @@
 version: 2
 jobs:
-  # build:
-  #   docker:
-  #     - image: circleci/python:3.6.1
+  build_python:
+    docker:
+      - image: circleci/python:3.6.1
       
-  #   steps:
-  #     - checkout
+    steps:
+      - checkout
 
-  #     # Download and cache dependencies
-  #     - restore_cache:
-  #         keys:
-  #         - v1-dependencies-{{ checksum "requirements.txt" }}
-  #         # fallback to using the latest cache if no exact match is found
-  #         - v1-dependencies-
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
 
-  #     - run:
-  #         name: install dependencies
-  #         command: |
-  #           python3 -m venv venv
-  #           . venv/bin/activate
-  #           pip install -r requirements.txt
-  #           pip install .
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            pip install .
 
-  #     - save_cache:
-  #         paths:
-  #           - ./venv
-  #         key: v1-dependencies-{{ checksum "requirements.txt" }}
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
         
-  #     # run tests!
-  #     - run:
-  #         name: run tests
-  #         command: |
-  #           . venv/bin/activate
-  #           pytest
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            pytest
   
-  build:
+  build_go:
     docker:
       - image: circleci/golang:1.11
     
@@ -60,3 +60,11 @@ jobs:
           name: run infrastructure tests
           command: |
             go test -v ./...
+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_python
+      - build_go
