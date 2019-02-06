@@ -24,7 +24,7 @@ resource "aws_instance" "flask_server" {
     }
 }
 
-module "provision_project" {
+module "provision_project_new_name" {
     source = "./provision_project"
 
     host = "${aws_instance.flask_server.public_ip}"
